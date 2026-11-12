@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06080c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icons/icon.svg">
+<link rel="apple-touch-icon" href="../icons/icon-180.png">
+<title>$500 증발 사건 — DEV EXIT ROOM</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.stage{background:linear-gradient(180deg,#121722 0%,#0e121a 58%,#1b1410 58%,#140f0b 100%)}
+.stage::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 42% 58%,#5aa9ff14 0%,transparent 40%)}
+#h-window{left:5%;top:7%;width:25%;height:36%;background:linear-gradient(180deg,#0a1530,#1a1b3a 70%,#2a1a33);border:.5cqw solid #2a303c;border-radius:4px;overflow:hidden}
+#h-window .bld{position:absolute;bottom:0;background:#0b0e16}
+#h-window .bld i{position:absolute;width:14%;height:4%;background:#ffd27a;opacity:.7}
+#h-window .bar{position:absolute;left:50%;top:0;bottom:0;width:.4cqw;background:#2a303c}
+#h-board{left:35%;top:7%;width:30%;height:33%;background:#e9ecef;border:.6cqw solid #b8bec7;border-radius:4px;padding:2%;color:#1d3b8f;font-family:var(--mono);font-size:.85cqw;line-height:1.5;overflow:hidden}
+#h-board .doodle{color:#c22;font-weight:700}
+#h-rack{left:80%;top:12%;width:15%;height:72%;background:linear-gradient(90deg,#15181e,#1f232b 50%,#15181e);border:.25cqw solid #2c313b;border-radius:5px;padding:6% 8%;display:flex;flex-direction:column;gap:5%}
+#h-rack .unit{flex:1;background:#0c0e12;border:1px solid #2c313b;border-radius:2px;position:relative}
+#h-rack .unit i{position:absolute;top:40%;width:.45cqw;height:.45cqw;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);animation:blink 1.4s infinite}
+#h-rack .unit i:nth-child(1){left:10%}#h-rack .unit i:nth-child(2){left:22%;animation-delay:.3s}
+#h-rack .unit.hot i{background:var(--acc);box-shadow:0 0 8px var(--acc);animation-duration:.4s}
+#h-rack .lock{position:absolute;right:8%;top:46%;width:14%;height:6%;background:#c9a227;border-radius:2px}
+#h-rack.open .lock{background:var(--ok)}
+.desk{position:absolute;left:8%;top:62%;width:66%;height:5%;background:linear-gradient(180deg,#5a3e2b,#3e2a1c);border-radius:3px;box-shadow:0 10px 20px #0008}
+.desk-leg{position:absolute;top:67%;width:2%;height:33%;background:#2f2016}
+.chair{position:absolute;left:38%;top:70%;width:12%;height:30%;background:#1a1d24;border-radius:12px 12px 0 0}
+#h-laptop{left:33%;top:38%;width:21%;height:24%}
+#h-laptop .scr{position:absolute;left:6%;right:6%;top:0;height:86%;background:#0b0f16;border:.4cqw solid #2a2f38;border-radius:6px 6px 0 0;display:grid;place-items:center;font-family:var(--mono);font-size:1cqw;color:var(--blue);text-align:center;box-shadow:0 0 40px #5aa9ff44}
+#h-laptop .base{position:absolute;left:0;right:0;bottom:0;height:14%;background:linear-gradient(180deg,#3a404b,#22262e);border-radius:0 0 8px 8px}
+#h-sticky{left:52.5%;top:40%;width:4%;height:7%;background:#ffe066;transform:rotate(6deg);box-shadow:2px 2px 4px #0006;font-size:.6cqw;color:#333;padding:3px;line-height:1.2;font-weight:700}
+#h-frame{left:17%;top:48%;width:7.5%;height:14%;background:#d9c6a5;border:.35cqw solid #6b4b32;border-radius:2px;display:grid;place-items:center;font-size:3cqw}
+#h-cal{left:25.5%;top:52%;width:6%;height:10%;background:#f2f2f2;border-top:.5cqw solid var(--acc);border-radius:2px;color:#222;font-size:.8cqw;text-align:center;font-weight:700;padding-top:4%}
+#h-cal b{display:block;font-size:180%}
+#h-mug{left:57%;top:55%;width:3.6%;height:7%;background:#e8e8e8;border-radius:0 0 6px 6px}
+#h-mug::after{content:"";position:absolute;right:-35%;top:20%;width:40%;height:45%;border:.25cqw solid #e8e8e8;border-left:0;border-radius:0 50% 50% 0}
+#h-phone{left:63%;top:59.5%;width:5.5%;height:2.8%;background:#111;border:1px solid #444;border-radius:4px}
+#h-phone i{position:absolute;inset:25%;background:var(--blue);opacity:.4;border-radius:2px;animation:blink 2s infinite}
+#h-trash{left:69%;top:72%;width:7%;height:19%;background:repeating-linear-gradient(90deg,#3b414c 0 3px,#2b3038 3px 7px);clip-path:polygon(0 0,100% 0,88% 100%,12% 100%)}
+#h-trash::after{content:"";position:absolute;left:30%;top:4%;width:30%;height:18%;background:#eee;border-radius:40%;transform:rotate(-20deg)}
+</style>
+</head>
+<body>
+<script src="../assets/engine.js"></script>
+<script>
+const {S,$,addClue,has,toast,modal,keypad,pwLock,computer,messenger,report,updGoal,ending,closeModal}=ER;
+
+const stage=`
+<div class="hs" id="h-window" data-k="window"><span class="lbl">창문</span><div class="bar"></div></div>
+<div class="hs" id="h-board" data-k="board"><span class="lbl">화이트보드</span>
+  <div>🗺 사내 네트워크</div><div>10.0.0.10 prod-api</div><div>10.0.0.20 staging</div><div>10.0.0.42 랙3 · ???</div><div class="doodle">🔐 서버랙 비번 규칙…</div></div>
+<div class="hs" id="h-rack" data-k="rack"><span class="lbl">서버랙</span>
+  <div class="unit"><i></i><i></i></div><div class="unit"><i></i><i></i></div><div class="unit hot"><i></i><i></i></div><div class="unit"><i></i><i></i></div><div class="unit"><i></i><i></i></div><div class="lock"></div></div>
+<div class="desk-leg" style="left:10%"></div><div class="desk-leg" style="left:71%"></div>
+<div class="chair"></div><div class="desk"></div>
+<div class="hs" id="h-laptop" data-k="laptop"><span class="lbl">당직 노트북</span><div class="scr" id="lapScr">🔒<br>LOCKED</div><div class="base"></div></div>
+<div class="hs" id="h-sticky" data-k="sticky"><span class="lbl">포스트잇</span>pw<br>= ?</div>
+<div class="hs" id="h-frame" data-k="frame"><span class="lbl">액자</span>🐱</div>
+<div class="hs" id="h-cal" data-k="cal"><span class="lbl">달력</span>MAR<b>14</b></div>
+<div class="hs" id="h-mug" data-k="mug"><span class="lbl">머그컵</span></div>
+<div class="hs" id="h-phone" data-k="phone"><span class="lbl">휴대폰</span><i></i></div>
+<div class="hs" id="h-trash" data-k="trash"><span class="lbl">휴지통</span></div>`;
+
+const people={'강대표':['👔','#3a1d24'],'준혁':['🧔','#1d2f3a'],'민지':['👩‍💻','#2f1d3a'],'나':['🧑‍💻','#1b2230'],'💸 BillingBot':['🤖','#3a2f1d']};
+const chans={
+ general:{name:'# general',msgs:[
+  ['준혁','18:02','내일이 마지막 출근이네요. 3년간 감사했습니다 🙏'],
+  ['강대표','18:05','고생 많았다 준혁아. 인수인계 꼼꼼히~'],
+  ['준혁','18:07','넵! 아 그리고 제 라즈베리파이는 서버랙에 두고 갈게요. <b>사내 모니터링용</b>이라 절대 끄지 마세요 ㅎㅎ'],
+  ['민지','18:30','준혁님 ㅠㅠ 가지 마세요'],
+  ['강대표','21:14','demo-key 이제 아무도 안 쓰지? 다음 주에 정리하자'],
+  ['준혁','21:15','네네 저는 이제 안 써요~']]},
+ alerts:{name:'# alerts',dot:1,msgs:[
+  ['💸 BillingBot','23:41','⚠️ [demo-key] 일일 사용액 <b>$100</b> 돌파'],
+  ['💸 BillingBot','01:12','🚨 [demo-key] 일일 사용액 <b>$300</b> 돌파'],
+  ['💸 BillingBot','02:31','🔥 [demo-key] 누적 <b>$487.20</b> · 상세 내역은 결제 대시보드 확인']]},
+ minji:{name:'민지 (인턴)',dot:1,msgs:[
+  ['민지','02:20','선배님 주무세요...? 알림 보고 깼어요 😨'],
+  ['민지','02:21','혹시... 저 때문일까요? 어제 오후에 데모 레포를 <b>30분 정도 public</b>으로 바꿨었어요'],
+  ['민지','02:21','근데 .env는 진짜 .gitignore에 넣었어요!! 커밋 기록 보시면 있어요 ㅠㅠ'],
+  ['민지','02:23','저 잘리는 건가요... 😭']]},
+ jh:{name:'준혁',msgs:[
+  ['나','22:40','준혁님 혹시 demo-key 쓰는 스크립트 아직 남아있어요?'],
+  ['준혁','22:58','아뇨 ㅎㅎ 다 지웠어요. 걱정 마세요'],
+  ['준혁','22:58','저 내일부터 연락 잘 안 될 거예요~ 제주도 가거든요 🏝'],
+  ['나','03:14','준혁님?'],['나','03:14','<span style="color:#7f8a9a">(읽지 않음)</span>']]}
+};
+
+function lapLock(){
+  pwLock({title:'💻 당직 노트북',user:'oncall@bugless',check:v=>{
+    if(v==='bug0314')return true;
+    if(/^bug\d{3}$/.test(v))return '아깝다! 포스트잇을 다시 봐. 생일은 숫자 4자리(MMDD)야.';
+    if(/^bug/.test(v))return '이름은 맞은 것 같은데… 생일 부분이 틀렸다.';
+    return '비밀번호가 올바르지 않습니다.';
+  },onOk(){S.flags.laptop=1;$('#lapScr').innerHTML='<span style="color:#3ddc97">● 로그인됨</span>';updGoal();toast('🔓 로그인 성공. 메신저에 안 읽은 메시지가 쌓여 있다.');lapOS()}});
+}
+function bill(el){
+  addClue('dash');
+  el.innerHTML=`<div class="card"><h4>어제 사용액 (11/11 18:00 ~ 현재)</h4><div class="big">$502.40</div><div style="font-size:12px;color:var(--dim)">월 예산 $600 중 83.7% 소진</div></div>
+  <div class="card"><h4>API 키별 사용액</h4><div class="tbl"><table><tr><th>이름</th><th>키</th><th>사용처</th><th>사용액</th></tr>
+  <tr><td>prod-main</td><td class="mono">sk-•••K3m8</td><td>실서비스 (고객 사용 중)</td><td class="mono">$12.10</td></tr>
+  <tr><td>staging</td><td class="mono">sk-•••p0Lz</td><td>테스트 서버</td><td class="mono">$3.10</td></tr>
+  <tr style="background:#ff4d5e14"><td><b>demo-key</b></td><td class="mono">sk-demo-•••9xQ2</td><td>데모 (중단 예정)</td><td class="mono" style="color:var(--acc)"><b>$487.20</b></td></tr></table></div></div>
+  <div class="card"><h4>🔎 demo-key 이상 요청 로그 (어젯밤)</h4><div class="tbl"><table><tr><th>시각</th><th>상태</th><th>요청 IP</th><th>User-Agent</th><th>비고</th></tr>
+  <tr><td class="mono">22:59:12</td><td><span class="tag t4">401</span></td><td class="mono">10.0.0.42</td><td class="mono">love-bot/0.3</td><td>키 오타로 인증 실패</td></tr>
+  <tr><td class="mono">23:00:03</td><td><span class="tag t2">200</span></td><td class="mono">10.0.0.42</td><td class="mono">love-bot/0.3</td><td>이후 18,402회 성공</td></tr>
+  <tr><td class="mono">01:40:55</td><td><span class="tag t4">429</span></td><td class="mono">10.0.0.42</td><td class="mono">love-bot/0.3</td><td>레이트 리밋 초과</td></tr>
+  <tr><td class="mono">02:31:20</td><td><span class="tag t5">500</span></td><td class="mono">10.0.0.42</td><td class="mono">love-bot/0.3</td><td>공급자 서버 과부하</td></tr></table></div>
+  <p style="font-size:12px;color:var(--dim);margin-top:10px">ℹ️ 외부(인터넷) IP에서 온 demo-key 요청: <b style="color:var(--txt)">0건</b></p></div>`;
+}
+function admin(el){
+  report(el,{warn:'⚠️ 보고서는 강대표님과 투자자에게 그대로 전달됩니다. <b>한 번 제출하면 되돌릴 수 없습니다.</b>',submit:'🛡 키 폐기 & 보고서 제출',groups:[
+   ['key','① 폐기할 API 키',[['prod','prod-main · sk-•••K3m8'],['stg','staging · sk-•••p0Lz'],['demo','demo-key · sk-demo-•••9xQ2']]],
+   ['who','② 책임자',[['minji','👩‍💻 민지 (인턴)'],['jh','🧔 박준혁 (퇴사 예정자)'],['ceo','👔 강대표 (CTO)'],['cat','🐱 버그 (고양이)']]],
+   ['why','③ 원인',[['repo','공개 레포에 키가 노출되어 외부 해커가 사용'],['pi','사내 기기의 크론 작업이 회사 키로 개인 유료 서비스를 운영'],['loop','프로덕션 코드의 무한 재시도 버그']]]],
+   onSubmit:a=>{if(a.key!=='demo')return ending('outage');if(a.who==='cat')return ending('cat');if(a.who==='minji')return ending('minji');if(a.who==='ceo')return ending('ceo');if(a.why!=='pi')return ending('half');ending('true')}});
+}
+function lapOS(){computer('💻 당직 노트북 — oncall@bugless',[['chat','💬 메신저',el=>messenger(el,chans,people,'chan')],['bill','📊 결제 대시보드',bill],['admin','🛡 관리자 콘솔',admin]],'lapTab')}
+function rackOpen(first){
+  addClue('pi');
+  modal('🍓 서버랙 3번 슬롯',`${first?'<p class="msg ok" style="margin:0 0 10px">✅ 철컥. 서버랙 문이 열렸다.</p>':''}
+  <p class="desc">3번 슬롯에 <b>"jh-pi"</b> 스티커가 붙은 라즈베리파이가 뜨겁게 달아올라 있다. 연결된 작은 모니터에 터미널이 떠 있다.</p>
+  <div class="term"><span class="g">jh@jh-pi</span>:<span class="b">~</span>$ cat .config/lovebot.env
+LLM_API_KEY=sk-demo-••••••••••••<span class="r">9xQ2</span>
+MODEL=ultra-max-pro-<span class="y">최고급</span>
+BOT_NAME="러브GPT 💘 연애상담 1회 990원"
+<span class="d"># 회사 키라 원가 0원 ㅎㅎ 퇴사해도 계속 돈다</span>
+
+<span class="g">jh@jh-pi</span>:<span class="b">~</span>$ hostname -I
+<span class="y">10.0.0.42</span>
+
+<span class="g">jh@jh-pi</span>:<span class="b">~</span>$ tail -3 love_bot.log
+[02:58] 유료 고객 "그 사람 마음이 궁금해요" → 응답 완료
+[02:59] 유료 고객 "썸 3개월째인데…" → 응답 완료
+[03:00] 💰 오늘 매출 ₩1,191,960</div>
+  <p class="desc" style="margin-top:12px">…전원 케이블을 뽑을까 하다가 멈췄다. <b>이건 증거다.</b> 키를 막는 건 관리자 콘솔에서 해야 한다.</p>`);
+}
+
+ER.boot({
+ id:'ep1',theme:'#ff4d5e',title:'💸 $500 증발 사건',sub:'개발자 스릴러 방탈출 · 난이도 ★☆☆ · 45분',limit:45*60,
+ clock:'02:47',clockSub:'AM · 목요일',
+ caller:{name:'강대표 (CTO)',org:'버그리스 주식회사',avatar:'👔',bg:'#3a1d24'},
+ intro:[['자?'],['자냐고'],['청구서 알림 봤어? 어젯밤 사이에 API 비용 <b>$500</b> 증발했다'],['...네? 오백 달러요?',1],['우리 한 달 예산이 $600이야.'],['9시에 투자자 미팅이다. 그 전에 <b>누가, 어떻게</b> 쓴 건지 찾고 <b>새는 키 막아.</b>'],['잘못된 키 막으면 서비스 전체 죽는 거 알지? 신중하게.'],['지금 사무실 갑니다...',1],['당직 노트북 써. 비번 규칙은 늘 붙어있는 데 있다.']],
+ brief:'어젯밤 사이 회사 AI API 비용이 $500 넘게 빠져나갔다. 오전 9시 투자자 미팅 전까지 <b>범인과 원인</b>을 밝히고 <b>새는 키를 폐기</b>하라.',
+ stage,pulse:['laptop'],startScroll:.4,
+ clues:{sticky:'📝 포스트잇',frame:'🐱 고양이 액자',cal:'📅 달력',board:'🗺 화이트보드',trash1:'📄 찢긴 git 로그',trash2:'🧾 영수증',mug:'☕ 머그컵',dash:'📊 결제 로그',pi:'🍓 라즈베리파이'},
+ clueOpen:{trash1:'trash',trash2:'trash',dash:'laptop',pi:'rack'},
+ init(){const w=$('#h-window');[[0,14,55],[15,12,75],[28,16,45],[52,14,85],[67,18,60],[86,14,40]].forEach(([l,wd,h])=>{const d=document.createElement('div');d.className='bld';d.style.cssText=`left:${l}%;width:${wd}%;height:${h}%`;for(let i=0;i<7;i++){const x=document.createElement('i');x.style.left=(10+Math.random()*75)+'%';x.style.top=(8+Math.random()*80)+'%';d.appendChild(x)}w.insertBefore(d,w.querySelector('.bar'))})},
+ onStart(){toast('🏢 03:12 AM · 버그리스 사무실. 아무도 없다. 서버랙만 웅웅거린다.')},
+ props:{
+  window(){modal('🌃 창문','<p class="desc">강남대로 야경. 불 켜진 사무실이 몇 개 보인다. 저 사람들도 장애 대응 중일까.<br><br>유리에 비친 내 얼굴이 피곤해 보인다. <b>9시까지 6시간도 안 남았다.</b></p>')},
+  sticky(){addClue('sticky');modal('📝 노트북에 붙은 포스트잇',`<div class="paper" style="background:#ffe066;transform:rotate(-1.5deg);font-family:var(--mono)">
+   <b>[당직 노트북 비번 규칙]</b><br><br>① 우리 사무실 고양이 이름 (영문 소문자)<br>② + 고양이 생일 <u>숫자 4자리</u> (MMDD)<br><br>예) 고양이 「나비」, 생일 1월 5일<br>&nbsp;&nbsp;&nbsp;→ <b>nabi0105</b><br><span style="font-size:12px">(1월은 01! 0 빼먹지 말 것!!)</span><br><br><span style="font-size:12px">※ 보안팀이 '외우기 쉬워야 안 붙여놓는다'고 함 ← 근데 붙여놓음 ㅋ</span></div>`)},
+  frame(){addClue('frame');modal('🐱 책상 위 액자',`<div class="paper" style="text-align:center"><div style="font-size:80px">🐱</div><b style="font-size:18px">우리 팀 막내 「버그」</b><br>영문 이름표: <span class="mono" style="background:#222;color:#fff;padding:2px 8px;border-radius:4px">BUG</span><br><br><span style="font-size:13px;color:#666">"이름은 버그지만 디버깅은 제일 잘함" — 액자 뒷면 낙서</span></div>`)},
+  cal(){addClue('cal');modal('📅 탁상 달력 — 3월',`<div class="paper"><b>MARCH</b><br><br><div class="mono" style="font-size:13px;line-height:2">3/02 스프린트 시작<br>3/09 배포 🚀<br><span style="background:#ff4d5e;color:#fff;padding:1px 6px;border-radius:3px">3/14 🎂 버그 생일! 츄르 사오기</span><br>3/21 준혁 연차<br>3/28 회고</div><p style="font-size:12px;color:#777;margin-top:10px">(왜 11월인데 아직 3월에 멈춰 있지… 아무도 안 넘긴 듯)</p></div>`)},
+  mug(){addClue('mug');modal('☕ 식은 머그컵','<p class="desc">반쯤 남은 아메리카노가 차갑게 식어 있다. 머그컵에 프린트된 문구:</p><div class="paper" style="text-align:center;font-size:22px;font-weight:900">I ❤ cron</div><p class="desc" style="margin-top:12px">바닥에 매직으로 <b>"준혁 꺼. 건들면 죽음"</b>. 퇴사 전날까지 컵을 두고 갔네.</p>')},
+  phone(){modal('📱 내 휴대폰','<p class="desc">강대표님과의 대화창. 마지막 메시지:</p><div class="term">강대표: 9시에 투자자 미팅이다. 그 전에 <span class="y">누가, 어떻게</span> 쓴 건지 찾고 <span class="y">새는 키 막아.</span>\n강대표: 잘못된 키 막으면 <span class="r">서비스 전체 죽는다.</span>\n강대표: 당직 노트북 써. 비번 규칙은 늘 붙어있는 데 있다.</div>')},
+  board(){addClue('board');modal('🗺 화이트보드',`<div class="paper" style="font-family:var(--mono);color:#1d3b8f;font-size:13px;line-height:1.9"><b>🗺 사내 네트워크 맵</b> (갱신: 준혁)<br>10.0.0.10 → prod-api 서버<br>10.0.0.20 → staging 서버<br>10.0.0.42 → <b>서버랙 3번 슬롯 · 모니터링 파이 🍓</b><br>그 외 → 외부 (인터넷)<br><br><span style="color:#c22"><b>🔐 서버랙 잠금 규칙 (보안팀 v2)</b><br>비번은 매일 바뀜!<br>= 전날 밤 <u>이상 요청 로그</u>의 HTTP 상태코드<br>&nbsp;&nbsp;<b>첫 자리 숫자</b>를 <b>시간순</b>으로 이어붙인 4자리</span><br><br><span style="color:#555">TODO: demo-key 폐기 (담당: ???) ← 3주째 방치</span></div>`)},
+  trash(){addClue('trash1');addClue('trash2');modal('🗑 휴지통',`<p class="desc">휴지통을 뒤졌다. 프린트된 종이 한 장과 구겨진 영수증이 나왔다.</p>
+   <div class="term torn"><span class="d">$ git log --oneline demo-landing</span>
+<span class="y">e91c3aa</span> (준혁) chore: temp cleanup
+<span class="y">7b2d004</span> (민지) chore: add .env to .gitignore
+<span class="y">a3f9e1c</span> (민지) feat: demo landing page
+
+<span class="d">$ git show e91c3aa --stat</span>
+ deploy/crontab | 1 <span class="g">+</span>
+<span class="g">+ * * * * * python3 /home/jh/love_bot.py --key $DEMO_K</span></div>
+   <div class="paper crumple" style="margin-top:14px;font-family:var(--mono);font-size:13px">🧾 <b>디바이스마트 영수증</b><br>라즈베리파이 5 (8GB) ×1 … 132,000원<br>방열 케이스 ×1 … 18,000원<br>구매자: 박준혁<br><span style="color:#a33">메모: 러브GPT 서버용 💘 (법카 X, 개인카드 O)</span></div>`)},
+  rack(){if(S.flags.rack)return rackOpen();
+   modal('🔒 서버랙 전자 자물쇠','<p class="desc">3번 슬롯 LED만 미친 듯이 빨갛게 깜빡인다. 자물쇠에 4자리 숫자 패드가 달려 있다.</p>');
+   keypad({len:4,code:'4245',onOk(){S.flags.rack=1;$('#h-rack').classList.add('open');updGoal();rackOpen(true)}})},
+  laptop(){if(!S.flags.laptop)return lapLock();lapOS()}
+ },
+ goal:S=>!S.flags.laptop?'<b>목표</b> · 당직 노트북 잠금 해제':!S.flags.rack?'<b>목표</b> · 비용이 새는 곳을 추적하라':'<b>목표</b> · 관리자 콘솔에서 키 폐기 & 보고',
+ hint:S=>!S.flags.laptop?'노트북 비번 규칙은 <b>포스트잇</b>에. 고양이 영문 이름은 <b>액자</b>, 생일은 <b>달력</b>에.':!S.flags.rack?'<b>화이트보드</b>에 서버랙 비번 규칙이 있다. <b>결제 대시보드</b>의 demo-key 로그에서 상태코드 첫 자리를 시간순으로!':'요청 IP <b>10.0.0.42</b>는 사내망이다. 외부 유출이었다면 외부 IP가 찍혔겠지? 공개 레포는 미끼일 수 있다.',
+ retry(){S.flags.lapTab='admin';lapOS()},
+ endings:{
+  true:['TRUE END','var(--ok)','🍓 러브GPT의 최후',`demo-key를 폐기한 순간, 서버랙 3번 슬롯의 LED가 초록색으로 돌아왔다.<br><br>라즈베리파이 모니터에는 <span class="mono" style="color:var(--acc)">401 Unauthorized</span>가 끝없이 쏟아지기 시작했다. 동시에 휴대폰이 울렸다. 제주공항에 있어야 할 준혁의 메시지였다.<br><br><b>"혹시… 키 바꾸셨어요? 😅 제 고객님들이…"</b><br><br>오전 9시. 강대표는 투자자 앞에서 보고서를 펼쳤다. "내부 통제 이슈를 <b>6시간 만에</b> 탐지하고 차단했습니다." 투자자가 고개를 끄덕였다.<br><br>민지는 다음 날 정규직 전환 제안을 받았다. 그리고 버그는 오늘도 키보드 위에서 잔다. 🐱`],
+  half:['NORMAL END','var(--warn)','범인은 맞혔지만…','키를 막자 비용은 멈췄다. 범인도 맞았다.<br><br>하지만 보고서의 원인이 틀렸다. 투자자가 물었다. "그래서 정확히 어떻게 새어나간 거죠?" 강대표가 당신을 쳐다봤다. 당신은 대답하지 못했다.<br><br><b>원인을 정확히 밝혀야 같은 일이 반복되지 않는다.</b>'],
+  minji:['BAD END','var(--acc)','억울한 인턴','보고서를 받은 강대표는 민지를 불렀다. 민지는 울면서 짐을 쌌다.<br><br>그날 밤 11시 1분. <b>BillingBot</b>이 다시 울렸다.<br><span class="mono">"⚠️ [demo-key 재발급본] 사용량 급증 감지"</span><br><br>서버랙 3번 슬롯이 또 빨갛게 깜빡였다.<br><br><b>공개 레포는 미끼였다. 로그의 IP를 다시 보자.</b>'],
+  ceo:['BAD END','var(--acc)','하극상','"범인은… 대표님입니다."<br><br>정적. 강대표가 천천히 안경을 벗었다.<br>"내가 새벽 3시에 너를 깨워서 내 범죄를 찾으라고 했다고?"<br><br>당신의 수습 기간은 조용히 연장되었다.<br><br><b>증거는 다른 사람을 가리키고 있었다.</b>'],
+  cat:['SECRET END','var(--blue)','범인은 고양이','보고서 책임자 란: <b>🐱 버그</b><br><br>강대표는 한참 웃더니 "그래, 고양이 이름이 버그니까 버그 때문이라고 하자"라며 넘어갔다.<br><br>버그는 키보드 위에서 <span class="mono">;;;;;;;;;;;;;;;</span>를 입력하고 잠들었다.<br><br><b>진짜 범인을 찾으면 TRUE END를 볼 수 있다.</b>'],
+  outage:['BAD END','var(--acc)','🔥 전면 장애','엔터를 누르는 순간, 모니터의 모든 대시보드가 빨갛게 변했다.<br><br><span class="mono" style="color:var(--acc)">[prod] 503 Service Unavailable × 12,804</span><br><br>당신은 <b>실서비스 키</b>를 폐기했다. 강대표에게서 부재중 전화가 17통 찍혔다. 그 와중에 demo-key는 여전히 조용히 돈을 태우고 있었다.<br><br><b>비용이 튄 키가 어느 것이었는지 대시보드를 다시 보자.</b>'],
+  timeout:['TIME OVER','var(--acc)','오전 9시','회의실 문이 열렸다. 투자자가 앉고, 강대표가 당신을 본다.<br>"그래서… 원인은?"<br><br>당신이 입을 열기도 전에 BillingBot이 울렸다.<br><span class="mono">"🔥 [demo-key] 누적 $731.90"</span><br><br><b>다시 도전해 보자. 힌트는 3번까지 쓸 수 있다.</b>']
+ }
+});
+</script>
+</body>
+</html>

