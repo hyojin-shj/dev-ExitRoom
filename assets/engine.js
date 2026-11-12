@@ -33,6 +33,24 @@
     }
   };
 
+  /* ---------- room list (index page + "next case" cards on the ending screen) ---------- */
+  const ROOMS = [
+    { id: 'ep1', no: 'ROOM 01', icon: '💸', color: '#ff4d5e', title: '$500 증발 사건', log: '새벽 2시 47분, CTO의 카톡. 하룻밤 사이 AI API 비용 $500가 사라졌다. 투자자 미팅까지 6시간.', diff: '★☆☆ 쉬움', time: '45분', theme: '비용 폭탄 · 내부자' },
+    { id: 'ep2', no: 'ROOM 02', icon: '🗄', color: '#ff9a4d', title: '금요일 18:02, DROP TABLE', log: '칼퇴 직전, 운영 DB의 users 테이블이 통째로 사라졌다. 감사 로그에 찍힌 이름은… AI 에이전트?', diff: '★★☆ 보통', time: '50분', theme: 'AI 에이전트 · 백업 복구' },
+    { id: 'ep3', no: 'ROOM 03', icon: '👻', color: '#8b7bff', title: '04:44 유령 커밋', log: '퇴사한 지 1년 된 동료의 계정으로 새벽 main에 커밋이 올라온다. 06:00 자동 배포까지 52분.', diff: '★★★ 어려움', time: '60분', theme: '보안 사고 · 공급망' }
+  ];
+  // Other rooms open after ROOM 01's TRUE END. If storage is blocked we can't remember that, so open everything.
+  const storageOK = (() => { try { localStorage.setItem('der:t', '1'); return true; } catch (e) { return false; } })();
+  const unlocked = () => !storageOK || !!store.get('progress', {}).ep1;
+  function roomCard(r, href) {
+    const p = store.get('progress', {})[r.id];
+    const a = document.createElement('a'); a.className = 'room'; a.href = href; a.style.setProperty('--c', r.color);
+    a.innerHTML = `<div class="ic">${r.icon}</div><div class="body"><div class="no">${r.no}</div><h2></h2><div class="log"></div>
+      <div class="meta"><span class="chip diff">${r.diff}</span><span class="chip">⏱ ${r.time}</span><span class="chip">${r.theme}</span>${p ? `<span class="chip clear">✅ 탈출 · ${fmt(p.best)}</span>` : ''}</div></div>`;
+    a.querySelector('h2').textContent = r.title; a.querySelector('.log').textContent = r.log;
+    return a;
+  }
+
   const S = { clues: {}, hints: 3, hintsUsed: 0, start: 0, ended: false, token: null, flags: {} };
   let C = null; // room config
 
@@ -74,8 +92,8 @@
     <p class="lbmsg" id="noSave" style="display:none">TRUE END를 보면 명예의 전당에 기록할 수 있어요.</p>
     <h4 style="margin-top:14px">🏆 명예의 전당 · TOP 20</h4><div class="lb" id="lbEnd"><p class="lbmsg">불러오는 중…</p></div>
   </div>
+  <div class="next" id="nextBox" style="display:none"><h4>🎬 다음 사건</h4><div class="rooms" id="nextRooms"></div></div>
   <div class="row" style="justify-content:center">
-    <a class="btn" href="../index.html" style="text-decoration:none">🚪 다른 방 고르기</a>
     <button class="btn ghost" id="retryBtn">마지막 선택으로</button>
     <button class="btn ghost" onclick="location.reload()">처음부터</button>
   </div>
@@ -207,21 +225,26 @@
     $('#endStats').textContent = `소요 시간 ${fmt(e)} · 힌트 ${S.hintsUsed}회 · 단서 ${Object.keys(S.clues).length}/${total}`;
     const isTrue = k === 'true';
     $('#retryBtn').style.display = (isTrue || k === 'timeout') ? 'none' : '';
-    $('#saveBox').style.display = isTrue ? '' : 'none';
-    $('#noSave').style.display = isTrue ? 'none' : '';
+    $('#saveBox').style.display = isTrue && S.token ? '' : 'none';
+    $('#noSave').style.display = !isTrue && S.token ? '' : 'none';
     if (isTrue) {
       const prog = store.get('progress', {}); const p = prog[C.id];
       if (!p || e < p.best) prog[C.id] = { best: e, hints: S.hintsUsed, at: Date.now() };
       store.set('progress', prog);
       $('#nick').value = store.get('nick', '');
-      if (!S.token) { $('#smsg').className = 'msg'; $('#smsg').textContent = '온라인 랭킹 서버에 연결되지 않아 이 기기에만 기록됐어요.'; }
     }
     const seen = store.get('endings', {}); (seen[C.id] = seen[C.id] || {})[k] = 1; store.set('endings', seen);
+    if (unlocked()) {
+      const box = $('#nextRooms'); box.innerHTML = '';
+      ROOMS.filter(r => r.id !== C.id).forEach(r => box.appendChild(roomCard(r, r.id + '.html')));
+      $('#nextBox').style.display = '';
+    }
     show('ending'); loadBoard();
   }
   function renderBoard(data, myNick) {
     const el = $('#lbEnd'); el.innerHTML = '';
-    if (!data) { el.innerHTML = '<p class="lbmsg">온라인 랭킹 서버에 연결되지 않았어요. (배포 후 Redis를 연결하면 켜져요)</p>'; return; }
+    $('.board-wrap').style.display = data ? '' : 'none';
+    if (!data) return;
     if (!data.rows.length) { el.innerHTML = '<p class="lbmsg">아직 기록이 없어요. 첫 번째 탈출자가 되어 보세요!</p>'; return; }
     const t = document.createElement('table'); t.innerHTML = '<tr><th>#</th><th>닉네임</th><th>시간</th><th>힌트</th></tr>';
     data.rows.forEach((r, i) => {
@@ -250,7 +273,7 @@
   function menu() {
     modal('☰ 메뉴', `<p class="desc"><b>${esc(C.title)}</b><br>${esc(C.sub)}</p>
       <div class="card"><h4>📖 사건 개요</h4><p class="desc" style="margin:0">${C.brief}</p></div>
-      <div class="row"><a class="btn ghost wide" href="../index.html" style="text-decoration:none;text-align:center">🚪 방 목록으로 (진행 상황은 사라져요)</a></div>`);
+      <div class="row" ${unlocked() ? '' : 'hidden'}><a class="btn ghost wide" href="../index.html" style="text-decoration:none;text-align:center">🚪 방 목록으로 (진행 상황은 사라져요)</a></div>`);
   }
 
   /* ---------- boot ---------- */
@@ -259,6 +282,7 @@
     if (C.theme) document.documentElement.style.setProperty('--theme', C.theme);
     document.title = `${C.title} — DEV EXIT ROOM`;
     skeleton();
+    if (!unlocked()) $('.back').style.display = 'none';
     $('#stage').innerHTML = C.stage;
     $('#stage').querySelectorAll('.hs').forEach(h => h.onclick = () => open(h.dataset.k));
     (C.pulse || []).forEach(k => { const el = document.querySelector(`[data-k="${k}"]`); el && el.classList.add('pulse'); });
@@ -283,5 +307,5 @@
     intro();
   }
 
-  window.ER = { boot, S, $, wait, fmt, esc, store, api, addClue, has, toast, mark, modal, closeModal, open, shake, keypad, pwLock, computer, messenger, report, updGoal, ending };
+  window.ER = { ROOMS, unlocked, roomCard, boot, S, $, wait, fmt, esc, store, api, addClue, has, toast, mark, modal, closeModal, open, shake, keypad, pwLock, computer, messenger, report, updGoal, ending };
 })();
