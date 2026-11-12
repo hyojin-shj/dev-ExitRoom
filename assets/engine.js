@@ -293,9 +293,12 @@
     $('#saveBtn').onclick = save;
     $('#retryBtn').onclick = () => { S.ended = false; show('game'); C.retry && C.retry(); };
     $('#hintBtn').onclick = () => {
+      const h = C.hint(S, has);
+      // Same hint as last time (no progress since) → show it again for free.
+      if (h === S.lastHint) return toast('💡 ' + h, 7000);
       if (S.hints <= 0) return toast('💡 힌트를 모두 썼다. 이제 실력으로…');
-      S.hints--; S.hintsUsed++; $('#hintBtn').textContent = '💡 ' + S.hints;
-      toast('💡 ' + C.hint(S, has), 7000);
+      S.hints--; S.hintsUsed++; S.lastHint = h; $('#hintBtn').textContent = '💡 ' + S.hints;
+      toast('💡 ' + h, 7000);
     };
     $('#startBtn').onclick = async () => {
       show('game'); S.start = Date.now(); tick(); setInterval(tick, 1000); updGoal();
